@@ -44,14 +44,30 @@ def listar_produtos():
     conexao.close()
     return produtos 
 
+def atualizar_produto(produto_id, novo_preco, nova_quantidade):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute(
+        """
+        UPDATE produtos
+        SET preco = ?, quantidade = ?
+        WHERE id = ?
+        """,
+        (novo_preco, nova_quantidade, produto_id)
+    )
+
+    conexao.commit()
+    conexao.close()
+
 if __name__ == "__main__":
-    criar_tabela_produtos()
-    inserir_produto("Feijão", 9.50, 20)
+    produtos = listar_produtos()
+    print("ANTES:", produtos)
+
+    atualizar_produto(1, 30.00, 5)
 
     produtos = listar_produtos()
-    for produto in produtos:
-        print(produto)
-
+    print("DEPOIS:", produtos)
 
             
          
