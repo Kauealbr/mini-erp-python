@@ -20,7 +20,24 @@ def criar_tabela_produtos():
     """)
 
     conexao.commit()
+    conexao.close() 
+
+def criar_tabela_clientes():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS clientes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            email TEXT NOT NULL,
+            telefone TEXT NOT NULL
+        )
+    """)
+
+    conexao.commit()
     conexao.close()
+
 
 def inserir_produto(nome, preco, quantidade):
     conexao = conectar()
@@ -83,6 +100,7 @@ def deletar_produto(produto_id):
 
     conexao.commit()
     conexao.close()
+
 
 
 
