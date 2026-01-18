@@ -60,14 +60,18 @@ def atualizar_produto(produto_id, novo_preco, nova_quantidade):
     conexao.commit()
     conexao.close()
 
-if __name__ == "__main__":
-    produtos = listar_produtos()
-    print("ANTES:", produtos)
+def deletar_produto(produto_id):
+    conexao = conectar()
+    cursor = conexao.cursor()
 
-    atualizar_produto(1, 30.00, 5)
+    cursor.execute(
+        "DELETE FROM produtos WHERE id = ?",
+        (produto_id,)
+    )
 
-    produtos = listar_produtos()
-    print("DEPOIS:", produtos)
+    conexao.commit()
+    conexao.close()
 
-            
+
+
          
