@@ -75,11 +75,26 @@ def relatorio_faturamento_por_produto():
 
     return resultados 
 
-if __name__ == "__main__":
-    relatorio = relatorio_faturamento_por_produto()
+def relatorio_cliente_mais_ativo():
+    import sqlite3
+    from database import DB_PATH
 
-    for nome, total in relatorio:
-        print(f"{nome} → R$ {total:.2f}")
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT c.nome, SUM(v.total) AS total_gasto
+        FROM vendas v
+        JOIN clientes c ON v.cliente_id = c.id
+        GROUP BY c.nome
+        ORDER BY total_gasto DESC
+    """)
+
+    resultados = cursor.fetchall()
+    conn.close()
+    return resultados
+
+
 
 
 
