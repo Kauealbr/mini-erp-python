@@ -5,6 +5,10 @@ class Produto:
         self.preco = preco
         self.quantidade = quantidade
 
+    def __str__(self):
+            return f"ID: {self.id} | {self.nome} | R$ {self.preco:.2f} | Estoque: {self.quantidade}" 
+
+
 if __name__ == "__main__":
-    p = Produto(1, "Arroz", 25.90, 10)
-    print(p.nome, p.preco, p.quantidade)
+    p = Produto(1, "Arroz", 25.9, 10)
+    print(p)
