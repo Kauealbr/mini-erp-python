@@ -196,4 +196,27 @@ def criar_tabela_itens_venda():
     conexao.commit()
     conexao.close()
 
-         
+def buscar_produto_por_id(produto_id):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT id, nome, preco, quantidade FROM produtos WHERE id = ?", (produto_id,))
+    linha = cursor.fetchone()
+    conexao.close()
+
+    if linha:
+        return linha
+    return None
+ 
+def atualizar_estoque(produto_id, nova_quantidade):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        UPDATE produtos
+        SET quantidade = ?
+        WHERE id = ?
+    """, (nova_quantidade, produto_id))
+
+    conexao.commit()
+    conexao.close()
