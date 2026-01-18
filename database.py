@@ -1,10 +1,15 @@
 import sqlite3
+import os
 from models import Produto
 from models import Cliente
+from datetime import date
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "mini_erp.db")
 
 def conectar():
-    return sqlite3.connect("mini_erp.db")
+    return sqlite3.connect(DB_PATH)
 
 
 def criar_tabela_produtos():
@@ -220,3 +225,55 @@ def atualizar_estoque(produto_id, nova_quantidade):
 
     conexao.commit()
     conexao.close()
+
+def criar_venda(cliente_id, itens):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    data_venda = date.today().isoformat()
+    total = 0
+    produtos_venda = []
+
+    for produto_id, quantidade in itens:
+        produto = buscar_produto_por_id(produto_id)
+
+        if not produto:
+            conexao.close()
+            raise ValueError("Produto não encontrado")
+
+        estoque_atual = produto[3]
+        preco = produto[2]
+
+        if quantidade > estoque_atual:
+            conexao.close()
+            raise ValueError("Estoque insuficiente")
+
+        subtotal = preco * quantidade
+        total += subtotal
+
+        produtos_venda.append((produto_id, quantidade, preco))
+        # 1. Inserir venda
+    cursor.execute("""
+        INSERT INTO vendas (cliente_id, data, total)
+        VALUES (?, ?, ?)
+    """, (cliente_id, data_venda, total))
+
+    venda_id = cursor.lastrowid
+    # 2. Inserir itens da venda e atualizar estoque
+    for produto_id, quantidade, preco in produtos_venda:
+        cursor.execute("""
+            INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario)
+            VALUES (?, ?, ?, ?)
+        """, (venda_id, produto_id, quantidade, preco))
+
+        produto = buscar_produto_por_id(produto_id)
+        novo_estoque = produto[3] - quantidade
+        atualizar_estoque(produto_id, novo_estoque)
+    conexao.commit()
+    conexao.close() 
+
+
+
+
+
+
