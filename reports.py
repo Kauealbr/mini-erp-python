@@ -56,6 +56,31 @@ def relatorio_produtos_mais_vendidos():
     conn.close() 
 
 
+def relatorio_faturamento_por_produto():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            p.nome,
+            SUM(iv.quantidade * iv.preco_unitario) AS faturamento
+        FROM itens_venda iv
+        JOIN produtos p ON iv.produto_id = p.id
+        GROUP BY p.nome
+        ORDER BY faturamento DESC
+    """)
+
+    resultados = cursor.fetchall()
+    conn.close()
+
+    return resultados 
+
+if __name__ == "__main__":
+    relatorio = relatorio_faturamento_por_produto()
+
+    for nome, total in relatorio:
+        print(f"{nome} → R$ {total:.2f}")
+
 
 
 
