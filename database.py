@@ -1,4 +1,5 @@
 import sqlite3
+from models import Produto
 
 
 def conectar():
@@ -39,10 +40,21 @@ def listar_produtos():
     cursor = conexao.cursor()
 
     cursor.execute("SELECT id, nome, preco, quantidade FROM produtos")
-    produtos = cursor.fetchall()
+    linhas = cursor.fetchall()
+
+    produtos = []
+    for linha in linhas:
+        produto = Produto(
+            id=linha[0],
+            nome=linha[1],
+            preco=linha[2],
+            quantidade=linha[3]
+        )
+        produtos.append(produto)
 
     conexao.close()
-    return produtos 
+    return produtos
+
 
 def atualizar_produto(produto_id, novo_preco, nova_quantidade):
     conexao = conectar()
