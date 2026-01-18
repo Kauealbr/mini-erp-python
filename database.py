@@ -1,5 +1,6 @@
 import sqlite3
 from models import Produto
+from models import Cliente
 
 
 def conectar():
@@ -113,6 +114,25 @@ def deletar_produto(produto_id):
     conexao.commit()
     conexao.close()
 
+def listar_clientes():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT * FROM clientes")
+    resultados = cursor.fetchall()
+
+    clientes = []
+    for linha in resultados:
+        cliente = Cliente(
+            id=linha[0],
+            nome=linha[1],
+            email=linha[2],
+            telefone=linha[3]
+        )
+        clientes.append(cliente)
+
+    conexao.close()
+    return clientes
 
 
 
