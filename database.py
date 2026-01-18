@@ -21,9 +21,19 @@ def criar_tabela_produtos():
     conexao.commit()
     conexao.close()
 
+def inserir_produto(nome, preco, quantidade):
+    conexao = conectar()
+    cursor = conexao.cursor()
 
-if __name__ == "__main__":
-        criar_tabela_produtos()
-        print("Tabela de produtos criada com sucesso!")
+    cursor.execute(
+        "INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)",
+        (nome, preco, quantidade)
+    )
+
+    conexao.commit()
+    conexao.close()
+
+
+
             
          
