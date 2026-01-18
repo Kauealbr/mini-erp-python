@@ -34,6 +34,24 @@ def inserir_produto(nome, preco, quantidade):
     conexao.close()
 
 
+def listar_produtos():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT id, nome, preco, quantidade FROM produtos")
+    produtos = cursor.fetchall()
+
+    conexao.close()
+    return produtos 
+
+if __name__ == "__main__":
+    criar_tabela_produtos()
+    inserir_produto("Feijão", 9.50, 20)
+
+    produtos = listar_produtos()
+    for produto in produtos:
+        print(produto)
+
 
             
          
