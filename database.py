@@ -177,5 +177,23 @@ def criar_tabela_vendas():
     conexao.commit()
     conexao.close()
 
+def criar_tabela_itens_venda():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS itens_venda (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            venda_id INTEGER NOT NULL,
+            produto_id INTEGER NOT NULL,
+            quantidade INTEGER NOT NULL,
+            preco_unitario REAL NOT NULL,
+            FOREIGN KEY (venda_id) REFERENCES vendas(id),
+            FOREIGN KEY (produto_id) REFERENCES produtos(id)
+        )
+    """)
+
+    conexao.commit()
+    conexao.close()
 
          
