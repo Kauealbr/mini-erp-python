@@ -16,7 +16,20 @@ class Cliente:
         self.telefone = telefone
 
 
+class ItemVenda:
+    def __init__(self, id, produto_id, quantidade, preco_unitario):
+        self.id = id
+        self.produto_id = produto_id
+        self.quantidade = quantidade
+        self.preco_unitario = preco_unitario 
 
-if __name__ == "__main__":
-    c = Cliente(1, "João", "joao@email.com", "11999999999")
-    print(c.nome, c.email, c.telefone)
+
+class Venda:
+    def __init__(self, id, cliente_id, data, total, itens=None):
+        self.id = id
+        self.cliente_id = cliente_id
+        self.data = data
+        self.total = total
+        self.itens = itens or []
+
+
