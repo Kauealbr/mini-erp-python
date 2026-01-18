@@ -160,5 +160,22 @@ def deletar_cliente(id):
     conexao.close()
 
 
+def criar_tabela_vendas():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS vendas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cliente_id INTEGER NOT NULL,
+            data TEXT NOT NULL,
+            total REAL NOT NULL,
+            FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+        )
+    """)
+
+    conexao.commit()
+    conexao.close()
+
 
          
