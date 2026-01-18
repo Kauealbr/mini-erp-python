@@ -147,6 +147,18 @@ def atualizar_cliente(id, nome, email, telefone):
     conexao.commit()
     conexao.close()
 
+def deletar_cliente(id):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        DELETE FROM clientes
+        WHERE id = ?
+    """, (id,))
+
+    conexao.commit()
+    conexao.close()
+
 
 
          
