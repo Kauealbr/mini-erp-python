@@ -134,6 +134,19 @@ def listar_clientes():
     conexao.close()
     return clientes
 
+def atualizar_cliente(id, nome, email, telefone):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        UPDATE clientes
+        SET nome = ?, email = ?, telefone = ?
+        WHERE id = ?
+    """, (nome, email, telefone, id))
+
+    conexao.commit()
+    conexao.close()
+
 
 
          
