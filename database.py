@@ -38,6 +38,18 @@ def criar_tabela_clientes():
     conexao.commit()
     conexao.close()
 
+def inserir_cliente(nome, email, telefone):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        INSERT INTO clientes (nome, email, telefone)
+        VALUES (?, ?, ?)
+    """, (nome, email, telefone))
+
+    conexao.commit()
+    conexao.close()
+
 
 def inserir_produto(nome, preco, quantidade):
     conexao = conectar()
